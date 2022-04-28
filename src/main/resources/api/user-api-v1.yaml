@@ -1,0 +1,64 @@
+openapi: 3.0.3
+info:
+  version: 1.0.0
+  title: Library api
+servers:
+  - url: http://localhost:8080
+paths:
+  /api/v1/users:
+    get:
+      summary: "return all users"
+      operationId: getAllUsers
+      tags:
+        - users
+      responses:
+        '200':
+          description: user list
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Users"
+        '400':
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+components:
+  schemas:
+    Gender:
+      type: string
+      enum: [ MALE, FEMALE ]
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        firstName:
+          type: string
+        createdAt:
+          type: string
+          format: date
+        Gender:
+          $ref: '#/components/schemas/Gender'
+    Users:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/User"
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
